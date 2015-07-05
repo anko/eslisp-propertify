@@ -1,0 +1,23 @@
+(= runTest (function (name func)
+ ((require "tape") name
+                   (function (t)
+                             (func t)
+                             ((. t end)))))) ; Automatically end tests
+
+(= eslc
+ (function (code)
+           (= fullCode ; wrap in a call
+              (+ "(macro propertify (require \"./index.js\")) (propertify "
+                 code
+                 ")"))
+           (return ((require "eslisp") fullCode))))
+
+(macro test
+ (function (name body)
+  (return `(runTest ,name (function (t) ,@body)))))
+
+; - - -
+
+(test "dot"  (((. t equals) (eslc "a.b")   "a.b;")))
+(test "dots" (((. t equals) (eslc "a.b.c") "a.b.c;")))
+(test "dot & call" (((. t equals) (eslc "(a.b 42)") "a.b(42);")))
