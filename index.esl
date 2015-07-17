@@ -1,6 +1,7 @@
 (= propertify
    (function
      (x)
+     (if (== (. x atom) ".") ((return x)))
      (= parts ((. (. x atom) split) "."))
      (if (> (. parts length) 1)
        (

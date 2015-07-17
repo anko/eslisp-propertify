@@ -21,3 +21,4 @@
 (test "dot"  (((. t equals) (eslc "a.b")   "a.b;")))
 (test "dots" (((. t equals) (eslc "a.b.c") "a.b.c;")))
 (test "dot & call" (((. t equals) (eslc "(a.b 42)") "a.b(42);")))
+(test "plain dot"  (((. t equals) (eslc "(. a b)")   "a.b;")))
