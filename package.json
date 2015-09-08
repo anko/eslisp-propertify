@@ -7,6 +7,9 @@
     "test": "make test",
     "prepublish": "make"
   },
+  "files": [
+      "index.js"
+  ],
   "author": "Anko <an@cyan.io> (http://an.cyan.io)",
   "license": "ISC",
   "devDependencies": {
