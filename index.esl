@@ -1,10 +1,23 @@
+(= dotWrapperStrip ; returns a list of [ dotsBefore, middleBit, dotsAfter ]
+   (function (x)
+             (= m ((. (. x atom) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
+             (return (array (. m 1) (. m 2) (. m 3)))))
+
 (= propertify
    (function
      (x)
      (if (== (. x atom) ".") ((return x)))
-     (= parts ((. (. x atom) split) "."))
+
+     (= unstripped (dotWrapperStrip x))
+     (= dotsStart (. unstripped 0))
+     (= middle    (. unstripped 1))
+     (= dotsEnd   (. unstripped 2))
+
+     (= parts ((. middle split) "."))
      (if (> (. parts length) 1)
        (
+        (:= (. parts 0) (+ (. parts 0) dotsStart))
+        (+= (. parts (. parts length)) dotsEnd)
         (= atoms ((. parts map) (function (y) (return (object atom y)))))
         (return `(. ,@atoms))
        )
