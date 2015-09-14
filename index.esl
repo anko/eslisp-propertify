@@ -6,7 +6,7 @@
 (= propertify
    (function
      (x)
-     (if (== (. x atom) ".") ((return x)))
+     (if (== (. x atom) ".") (return x))
 
      (= unstripped (dotWrapperStrip x))
      (= dotsStart (. unstripped 0))
@@ -15,23 +15,21 @@
 
      (= parts ((. middle split) "."))
      (if (> (. parts length) 1)
-       (
-        (:= (. parts 0) (+ (. parts 0) dotsStart))
-        (+= (. parts (. parts length)) dotsEnd)
-        (= atoms ((. parts map) (function (y) (return (object atom y)))))
-        (return `(. ,@atoms))
-       )
-       ( (return x) ))))
+       (block (:= (. parts 0) (+ (. parts 0) dotsStart))
+              (+= (. parts (- (. parts length) 1)) dotsEnd)
+              (= atoms ((. parts map) (function (y) (return (object atom y)))))
+              (return `(. ,@atoms)))
+       (return x))))
 
 (= transform
    (function
      (node)
      (if (instanceof node Array)
-        ( (return ((. node map) (function (y) (return (transform y))))) )
-        ( (if (|| (== (typeof node) "string")
-                  (== (typeof node) "number"))
-            ( (return node) )
-            ( (return (propertify node)) ))))))
+       (return ((. node map) (function (y) (return (transform y)))))
+       (block (if (|| (== (typeof node) "string")
+                      (== (typeof node) "number"))
+                (return node)
+                (return (propertify node)))))))
 
 (:= (. module exports)
     (function
