@@ -1,9 +1,10 @@
 # eslisp-propertify
 
-An [eslisp][1] macro that rewrites atoms containing dots to property accesses.
-This means you can write `x.y` instead of `(. x y)`.
+An [eslisp][1] macro that rewrites its input forms' atoms that contain dots
+into property accesses.  This means you can write `x.y.1` instead of `(. x y
+1)`.
 
-Probably reasonable to wrap your whole program with it, but you choose.
+Ignores trailing and leading dots, and atoms that consist of dots.
 
 ## Example
 
@@ -15,6 +16,28 @@ Probably reasonable to wrap your whole program with it, but you choose.
     a.b(42);
 
 See [the tests][2] for fuller usage.
+
+## Full wrap
+
+It's totally reasonable to wrap your whole program in this.  You might want to
+do this by e.g. adding a `make` build step that concatenates the appropriate
+incantations to the beginning and end of the file whenever compiling an eslisp
+code file:
+
+    %.js: %.esl
+        @cat $< \
+        | sed '1i \
+          (macro __propertify (require "eslisp-propertify")) \
+          (__propertify' \
+        | sed '$$a \
+          )' \
+        | eslc \
+        > $@
+
+## Limitations
+
+If you need a computed member expression, you'll still need the `.` macro: For
+example, to get `a.b[b.length]`, you'll need to write `(.  a.b b.length)`.
 
 ## License
 
