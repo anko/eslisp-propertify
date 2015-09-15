@@ -1,6 +1,6 @@
 {
   "name": "eslisp-propertify",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "eslisp macro that converts atoms containing dots into property access expressions",
   "main": "index.js",
   "scripts": {
