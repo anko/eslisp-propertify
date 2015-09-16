@@ -2,7 +2,7 @@
 
 An [eslisp][3] macro that rewrites its input forms' atoms that contain dots
 into property accesses.  This means you can write `x.y.1` instead of `(. x y
-1)`.
+1)`, which compiles to JS as `x.y[1];`.
 
 Ignores trailing and leading dots, and atoms that consist of dots.
 
