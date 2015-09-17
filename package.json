@@ -1,6 +1,6 @@
 {
   "name": "eslisp-propertify",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "eslisp macro that converts atoms containing dots into property access expressions",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "prepublish": "make"
   },
   "files": [
-      "index.js"
+    "index.js"
   ],
   "author": "Anko <an@cyan.io> (http://an.cyan.io)",
   "license": "ISC",
@@ -19,6 +19,5 @@
   "peerDependencies": {
     "eslisp": ">=0.2.1 <0.3.0 || 0.3.x || 0.4.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
