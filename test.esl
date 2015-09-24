@@ -1,4 +1,4 @@
-(= runTest (function (name func)
+(var runTest (function (name func)
  ((require "tape") name
                    (function (t)
                              (func t)

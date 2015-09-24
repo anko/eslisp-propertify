@@ -1,9 +1,9 @@
-(= dotWrapperStrip ; returns a list of [ dotsBefore, middleBit, dotsAfter ]
+(var dotWrapperStrip ; returns a list of [ dotsBefore, middleBit, dotsAfter ]
    (function (x)
-             (= m ((. (. x atom) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
+             (var m ((. (. x atom) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
              (return (array (. m 1) (. m 2) (. m 3)))))
 
-(= propertify
+(var propertify
    (function
      (x)
      (if (== (. x atom) ".") (return x))
@@ -15,13 +15,13 @@
 
      (= parts ((. middle split) "."))
      (if (> (. parts length) 1)
-       (block (:= (. parts 0) (+ (. parts 0) dotsStart))
+       (block (= (. parts 0) (+ (. parts 0) dotsStart))
               (+= (. parts (- (. parts length) 1)) dotsEnd)
-              (= atoms ((. parts map) (function (y) (return (object atom y)))))
+              (var atoms ((. parts map) (function (y) (return (object atom y)))))
               (return `(. ,@atoms)))
        (return x))))
 
-(= transform
+(var transform
    (function
      (node)
      (if (instanceof node Array)
@@ -31,8 +31,8 @@
                 (return node)
                 (return (propertify node)))))))
 
-(:= (. module exports)
-    (function
-      ()
-      (= args ((. Array prototype slice call) arguments 0))
-      (return ((. this multi apply) null ((. args map) transform)))))
+(= (. module exports)
+   (function
+    ()
+     (var args ((. Array prototype slice call) arguments 0))
+     (return ((. this multi apply) null ((. args map) transform)))))
