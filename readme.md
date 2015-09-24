@@ -19,20 +19,8 @@ See [the tests][5] for fuller usage.
 
 ## Full wrap
 
-It's totally reasonable to wrap your whole program in this.  You might want to
-do this by e.g. adding a `make` build step that concatenates the appropriate
-incantations to the beginning and end of the file whenever compiling an eslisp
-code file:
-
-    %.js: %.esl
-        @cat $< \
-        | sed '1i \
-          (macro __propertify (require "eslisp-propertify")) \
-          (__propertify' \
-        | sed '$$a \
-          )' \
-        | eslc \
-        > $@
+It's totally reasonable to wrap your whole program in this.  Consider the
+eslisp compiler's `--transform` flag.
 
 ## Limitations
 
