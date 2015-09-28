@@ -1,20 +1,21 @@
-(var runTest (function (name func)
- ((require "tape") name
-                   (function (t)
-                             (func t)
-                             ((. t end)))))) ; Automatically end tests
+(var runTest
+     (lambda (name func)
+       ((require "tape") name
+                         (lambda (t)
+                           (func t)
+                           ((. t end)))))) ; Automatically end tests
 
 (= eslc
- (function (code)
-           (= fullCode ; wrap in a call
-              (+ "(macro propertify (require \"./index.js\")) (propertify "
-                 code
-                 ")"))
-           (return ((require "eslisp") fullCode))))
+   (lambda (code)
+     (= fullCode ; wrap in a call
+        (+ "(macro propertify (require \"./index.js\")) (propertify "
+           code
+           ")"))
+     (return ((require "eslisp") fullCode))))
 
 (macro test
- (function (name body)
-  (return `(runTest ,name (function (t) ,@body)))))
+       (lambda (name body)
+         (return `(runTest ,name (lambda (t) ,@body)))))
 
 ; - - -
 
@@ -25,10 +26,10 @@
 
 (test "ignore start or end dots"
       (((. t equals)
-        (eslc "(macro ..a (function () (return (. '.b.. atom)))) (..a)")
+        (eslc "(macro ..a (lambda () (return (. '.b.. atom)))) (..a)")
         "'.b..';")))
 
 (test "pass to other macro"
-      (((. t equals) (eslc "(macro replace (function () (return 'x)))
-                            (replace (. a b))")
+      (((. t equals) (eslc "(macro replace (lambda () (return 'x)))
+                           (replace (. a b))")
                      "x;")))

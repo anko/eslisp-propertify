@@ -13,11 +13,11 @@
   "author": "Anko <an@cyan.io> (http://an.cyan.io)",
   "license": "ISC",
   "devDependencies": {
-    "eslisp": "^0.5.0",
+    "eslisp": "^0.6.0",
     "tape": "^4.0.0"
   },
   "peerDependencies": {
-    "eslisp": ">=0.2.1 <0.3.0 || 0.3.x || 0.4.x || 0.5.x"
+    "eslisp": ">=0.2.1 <0.3.0 || 0.3.x || 0.4.x || 0.5.x || 0.6.x"
   },
   "dependencies": {}
 }

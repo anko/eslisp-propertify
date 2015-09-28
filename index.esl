@@ -1,38 +1,38 @@
 (var dotWrapperStrip ; returns a list of [ dotsBefore, middleBit, dotsAfter ]
-   (function (x)
-             (var m ((. (. x atom) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
-             (return (array (. m 1) (. m 2) (. m 3)))))
+     (lambda (x)
+       (var m ((. (. x atom) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
+       (return (array (. m 1) (. m 2) (. m 3)))))
 
 (var propertify
-   (function
-     (x)
-     (if (== (. x atom) ".") (return x))
+     (lambda
+       (x)
+       (if (== (. x atom) ".") (return x))
 
-     (= unstripped (dotWrapperStrip x))
-     (= dotsStart (. unstripped 0))
-     (= middle    (. unstripped 1))
-     (= dotsEnd   (. unstripped 2))
+       (= unstripped (dotWrapperStrip x))
+       (= dotsStart (. unstripped 0))
+       (= middle    (. unstripped 1))
+       (= dotsEnd   (. unstripped 2))
 
-     (= parts ((. middle split) "."))
-     (if (> (. parts length) 1)
-       (block (= (. parts 0) (+ (. parts 0) dotsStart))
-              (+= (. parts (- (. parts length) 1)) dotsEnd)
-              (var atoms ((. parts map) (function (y) (return (object atom y)))))
-              (return `(. ,@atoms)))
-       (return x))))
+       (= parts ((. middle split) "."))
+       (if (> (. parts length) 1)
+         (block (= (. parts 0) (+ (. parts 0) dotsStart))
+                (+= (. parts (- (. parts length) 1)) dotsEnd)
+                (var atoms ((. parts map) (lambda (y) (return (object atom y)))))
+                (return `(. ,@atoms)))
+         (return x))))
 
 (var transform
-   (function
-     (node)
-     (if (instanceof node Array)
-       (return ((. node map) (function (y) (return (transform y)))))
-       (block (if (|| (== (typeof node) "string")
-                      (== (typeof node) "number"))
-                (return node)
-                (return (propertify node)))))))
+     (lambda
+       (node)
+       (if (instanceof node Array)
+         (return ((. node map) (lambda (y) (return (transform y)))))
+         (block (if (|| (== (typeof node) "string")
+                        (== (typeof node) "number"))
+                  (return node)
+                  (return (propertify node)))))))
 
 (= (. module exports)
-   (function
-    ()
+   (lambda
+     ()
      (var args ((. Array prototype slice call) arguments 0))
      (return ((. this multi apply) null ((. args map) transform)))))
