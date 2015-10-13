@@ -3,6 +3,7 @@
   "version": "0.1.4",
   "description": "eslisp macro that converts atoms containing dots into property access expressions",
   "main": "index.js",
+  "keywords": ["eslisp-macro"],
   "scripts": {
     "test": "make test",
     "prepublish": "make"
