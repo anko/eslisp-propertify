@@ -4,6 +4,7 @@
   "description": "eslisp macro that converts atoms containing dots into property access expressions",
   "main": "index.js",
   "keywords": ["eslisp-macro"],
+  "repository": "anko/eslisp-propertify",
   "scripts": {
     "test": "make test",
     "prepublish": "make"
