@@ -24,9 +24,13 @@
 (test "dot & call" (((. t equals) (eslc "(a.b 42)") "a.b(42);")))
 (test "plain dot"  (((. t equals) (eslc "(. a b)")   "a.b;")))
 
+(test "strings unaffected"  (((. t equals) (eslc "\"a.b\"") "'a.b';")))
+
 (test "ignore start or end dots"
       (((. t equals)
-        (eslc "(macro ..a (lambda () (return (. '.b.. atom)))) (..a)")
+        (eslc "(macro ..a (lambda ()
+                 (return ((. this string) (. '.b.. value)))))
+               (..a)")
         "'.b..';")))
 
 (test "pass to other macro"

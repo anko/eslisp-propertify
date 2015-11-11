@@ -1,12 +1,12 @@
 (var dotWrapperStrip ; returns a list of [ dotsBefore, middleBit, dotsAfter ]
      (lambda (x)
-       (var m ((. (. x atom) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
+       (var m ((. (. x value) match) (regex ^\(\\.*\)\(.*?\)\(\\.*\)$)))
        (return (array (. m 1) (. m 2) (. m 3)))))
 
 (var propertify
      (lambda
        (x)
-       (if (== (. x atom) ".") (return x))
+       (if (== (. x value) ".") (return x))
 
        (= unstripped (dotWrapperStrip x))
        (= dotsStart (. unstripped 0))
@@ -17,19 +17,26 @@
        (if (> (. parts length) 1)
          (block (= (. parts 0) (+ (. parts 0) dotsStart))
                 (+= (. parts (- (. parts length) 1)) dotsEnd)
-                (var atoms ((. parts map) (lambda (y) (return (object atom y)))))
-                (return `(. ,@atoms)))
+                (var atoms ((. parts map)
+                            (lambda (y)
+                              (return (object "type" "atom"
+                                              "value" y)))))
+                ((. atoms unshift) (object "type" "atom"
+                                           "value" "."))
+                (return (object "type" "list"
+                                "values" atoms)))
          (return x))))
 
 (var transform
      (lambda
        (node)
-       (if (instanceof node Array)
-         (return ((. node map) (lambda (y) (return (transform y)))))
-         (block (if (|| (== (typeof node) "string")
-                        (== (typeof node) "number"))
-                  (return node)
-                  (return (propertify node)))))))
+       (if (== (. node type) "list")
+         (return (object "type" "list"
+                         "values" ((. node values map)
+                                   (lambda (y) (return (transform y))))))
+         (block (if (== (. node type) "atom")
+                  (return (propertify node))
+                  (return node))))))
 
 (= (. module exports)
    (lambda
