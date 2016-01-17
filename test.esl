@@ -25,6 +25,7 @@
 (test "plain dot"  (((. t equals) (eslc "(. a b)")   "a.b;")))
 
 (test "strings unaffected"  (((. t equals) (eslc "\"a.b\"") "'a.b';")))
+(test "numbers unaffected"  (((. t equals) (eslc "3.2") "3.2;")))
 
 (test "ignore start or end dots"
       (((. t equals)

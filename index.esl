@@ -34,7 +34,13 @@
          (return (object "type" "list"
                          "values" ((. node values map)
                                    (lambda (y) (return (transform y))))))
-         (block (if (== (. node type) "atom")
+         (block (if
+                  (&&
+                    ; Ignore atoms
+                    (== (. node type) "atom")
+                    ; Ignore atoms that are numbers
+                    (! ((. (regex "^[0-9]+(?:.[0-9]+)?$") exec)
+                        (. node value))))
                   (return (propertify node))
                   (return node))))))
 
