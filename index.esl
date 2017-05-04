@@ -48,4 +48,4 @@
    (lambda
      ()
      (var args ((. Array prototype slice call) arguments 0))
-     (return ((. this multi apply) null ((. args map) transform)))))
+     (return ((. args map) transform))))
